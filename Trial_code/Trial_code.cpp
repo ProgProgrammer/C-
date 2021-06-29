@@ -4,7 +4,7 @@
 #include <complex>
 using namespace std;
 
-class TrigonometricForm
+class AllForms
 {
 protected:
     void trigonometricForm(double arr[2])
@@ -13,27 +13,35 @@ protected:
         double rho = abs(z);
         double phi = arg(z);
         cout << endl << "Тригонометрическая форма." << endl;
-        cout << "Модуль комплексного числа или радиус: " << rho << endl;
-        cout << "Аргумент: " << phi << endl;
+        cout << "Модуль комплексного числа: " << rho << endl;
+        cout << "Аргумент комплексного числа: " << phi << endl;
         cout << "cos(phi): " << cos(phi) << endl;
         cout << "sin(phi): " << sin(phi) << endl;
         cout << "Тригонометрическая форма комплексного числа: " << rho << "*(cos(" << phi << ") + i*sin(" << phi << "))" << endl;
-        cout << "Показательная форма комплексного числа: " << rho << "*exp(i*" << phi << ")" << endl;
-        cout << "Исходное комплексное число по модулю и аргументу: " << polar(rho, phi) << endl;
     }
-};
 
-class ComplexNumber : protected TrigonometricForm
-{
-private:
-    double arr[2];
-    void arithmeticForm()
+    void arithmeticForm(double arr[2])
     {
         complex < double > z(arr[0], arr[1]);
         cout << "Арифметическая форма = " << z << endl;
         cout << "Действительная часть комплексного числа: " << z.real() << endl;
         cout << "Мнимая часть комплексного числа: " << z.imag() << endl;
     }
+
+    void anotherForms(double arr[2])
+    {
+        complex < double > z(arr[0], arr[1]);
+        double rho = abs(z);
+        double phi = arg(z);
+        cout << "Показательная форма комплексного числа: " << rho << "*exp(i*" << phi << ")" << endl;
+        cout << "Исходное комплексное число по модулю и аргументу: " << polar(rho, phi) << endl;
+    }
+};
+
+class ComplexNumber : AllForms
+{
+private:
+    double arr[2];
 
     void createNumber(string str)
     {
@@ -64,23 +72,35 @@ private:
     }
 
 public:
+    string head;
+
+    ComplexNumber(string str)
+    {
+        head = str;
+    }
+
+    ~ComplexNumber()
+    {
+        cout << "Вызвался деструктор";
+    }
+
     void Print()
     {
         string str;
         int number;
+        cout << head;
         getline(cin, str);
         createNumber(str);
-        arithmeticForm();
+        arithmeticForm(arr);
         trigonometricForm(arr);
-        //cout << arr[0] << endl << arr[1] << endl;
+        anotherForms(arr);
     }
 };
 
 int main()
 {
     setlocale(LC_ALL, "ru");
-    cout << "Введите строку с числами: ";
-    ComplexNumber complexNumber;
+    ComplexNumber complexNumber("Введите строку с числами: ");
     complexNumber.Print();
     cin.get();
     return 0;
